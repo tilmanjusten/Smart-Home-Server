@@ -1,0 +1,49 @@
+:root,
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 1.6rem;
+    line-height: 1.6;
+}
+
+.wrapper {
+    align-items: center;
+    align-content: center;
+    justify-content: space-around;
+    display: flex;
+}
+
+.room {
+    text-align: center;
+}
+
+.name {
+    font-size: 1em;
+    margin-bottom: 1em;
+    text-transform: uppercase;
+}
+
+.gauge {
+    line-height: 1.2;
+}
+
+.label {
+    display: block;
+}
+
+.value {
+    font-size: 3em;
+    display: block;
+    margin-bottom: 0.25em;
+}
+
+.humidity {
+
+}
+
+.temperature {
+
+}

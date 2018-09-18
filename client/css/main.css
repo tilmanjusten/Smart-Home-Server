@@ -43,10 +43,12 @@ body {
     align-content: center;
     justify-content: space-around;
     display: flex;
+    height: 100vh;
 }
 
 .room {
     text-align: center;
+    width: 27vw
 }
 
 .name {
@@ -85,4 +87,9 @@ body {
 
 .temperature {
 
+}
+
+.chart {
+    height: 200px;
+    margin-top: 4rem;
 }

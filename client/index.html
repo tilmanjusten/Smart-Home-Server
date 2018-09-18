@@ -4,8 +4,16 @@
     <meta charset="UTF-8">
     <title>Wetter zu Hause</title>
 
+    <link rel="stylesheet" href="css/epoch.css">
     <link rel="stylesheet" href="css/main.css">
+
+    <!--<script src="https://qa.polyfill.io/v2/polyfill.min.js"></script>-->
+
+    <script src="js/jquery.slim.min.js"></script>
+    <script src="js/d3.min.js"></script>
+    <script src="js/epoch.min.js"></script>
     <script src="js/socket.io.js"></script>
+
     <script src="js/main.js"></script>
 </head>
 <body>
@@ -24,6 +32,7 @@
                 <span class="label">Rel. Luftfeuchte:</span>
                 <span class="value" data-unit="%">-</span>
             </div>
+            <div id="chart-odin" class="chart epoch category10"></div>
         </div>
 
         <div class="room" id="INKE">
@@ -36,6 +45,7 @@
                 <span class="labe ">Rel. Luftfeuchte:</span>
                 <span class="value" data-unit="%">-</span>
             </div>
+            <div id="chart-inke" class="chart epoch category10"></div>
         </div>
 
         <div class="room" id="PURL">
@@ -48,7 +58,10 @@
                 <span class="label">Rel. Luftfeuchte:</span>
                 <span class="value" data-unit="%">-</span>
             </div>
+            <div id="chart-purl" class="chart epoch category10"></div>
         </div>
+    </div>
+    <div class="chart">
     </div>
 </div>
 </body>

@@ -1,42 +1,17 @@
-const apiUrl = 'http://localhost:3124/weather-data.json'
+const socket = io('http://localhost:3124');
 
-setInterval(fetchData, 2000)
+socket.on('update', update)
 
-function fetchData() {
-    fetch(apiUrl)
-        .then(res => res.json())
-        .then(rawData => handleResponse(rawData.data))
-        .catch(err => console.error(err));
-}
+function update(item) {
+    const el = document.getElementById(item.deviceId)
 
-function handleResponse(data) {
-    updateUI(data.reverse())
-}
-
-function updateUI(data) {
-    let latestData = {};
-
-    data.forEach(item => {
-        if (!latestData[item.deviceId]) {
-            latestData[item.deviceId] = item;
-        }
-    })
-
-    // update single values
-    for (let item in latestData) {
-        if (latestData.hasOwnProperty(item)) {
-            const device = latestData[item]
-            const el = document.getElementById(device.deviceId)
-
-            if (!el) {
-                continue
-            }
-
-            const elHumidity = el.querySelector('.humidity')
-            const elTemperature = el.querySelector('.temperature')
-
-            elHumidity.innerHTML = device.hu + elHumidity.dataset.unit
-            elTemperature.innerHTML = device.te + elTemperature.dataset.unit
-        }
+    if (!el) {
+        return
     }
+
+    const elHumidity = el.querySelector('.humidity .value')
+    const elTemperature = el.querySelector('.temperature .value')
+
+    elHumidity.innerHTML = item.hu + elHumidity.dataset.unit
+    elTemperature.innerHTML = item.te + elTemperature.dataset.unit
 }

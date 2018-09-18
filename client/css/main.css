@@ -1,12 +1,20 @@
+* {
+    box-sizing: inherit;
+}
+
 :root,
 html {
     font-size: 62.5%;
 }
 
 body {
+    box-sizing: border-box;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 1.6rem;
     line-height: 1.6;
+    margin: 0;
+    min-height: 100vh;
+    padding: 0;
 }
 
 .wrapper {
@@ -14,6 +22,7 @@ body {
     align-content: center;
     justify-content: space-around;
     display: flex;
+    min-height: 85vh;
 }
 
 .room {
@@ -31,13 +40,23 @@ body {
 }
 
 .label {
-    display: block;
+
+}
+
+.temperature .label {
+    display: none;
+    /*display: block;*/
+    margin-bottom: 0.25em;
 }
 
 .value {
+
+}
+
+.temperature .value {
     font-size: 3em;
     display: block;
-    margin-bottom: 0.25em;
+    margin-bottom: 0.5em;
 }
 
 .humidity {

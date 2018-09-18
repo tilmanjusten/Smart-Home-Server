@@ -4,17 +4,17 @@
   "description": "Show weather data.",
   "main": "app/index.js",
   "scripts": {
-    "start-app": "nodemon app/index.js --ignore client/",
-    "start-server": "nodemon server.js",
+    "develop-app": "NODE_ENV=develop nodemon app/index.js --ignore client/",
+    "develop-client": "NODE_ENV=develop nodemon client-server.js --ignore app/",
+    "start-app": "node app/index.js",
+    "start-client": "node client-server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": "",
   "author": "Tilman Justen",
   "license": "ISC",
-  "devDependencies": {
-    "browser-sync": "^2.1.6"
-  },
   "dependencies": {
+    "browser-sync": "^2.1.6",
     "express": "^4.16.3",
     "serialport": "^7.0.2",
     "socket.io": "^2.1.1"

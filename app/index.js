@@ -1,6 +1,6 @@
 const SerialPort = require('serialport')
 const Readline = require('@serialport/parser-readline')
-const serialPortId = 'develop' === 'develop' ? '/dev/cu.usbmodem1421' : '/dev/ttyACM0'
+const serialPortId = process.env.NODE_ENV === 'develop' ? '/dev/cu.usbmodem1421' : '/dev/ttyACM0'
 const port = new SerialPort(serialPortId, {
     baudRate: 9600
 })

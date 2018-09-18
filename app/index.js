@@ -62,6 +62,10 @@ io.on('connection', function (socket) {
             socket.emit('status error', status.data)
         }
     })
+
+    socket.on('get history', () => {
+        socket.emit('history', weatherData)
+    })
 });
 
 parser.on('data', data => {
@@ -78,7 +82,7 @@ parser.on('data', data => {
     const humidity = dataMatch[2].replace('0', '')
     const temperature = dataMatch[3].replace('0', '')
     const item = {
-        date: date.toLocaleString(),
+        date: date.toUTCString(),
         deviceId,
         hu: humidity,
         te: temperature
@@ -86,8 +90,8 @@ parser.on('data', data => {
 
     weatherData.push(item)
 
-    // use 200 items only
-    weatherData = weatherData.slice(-200)
+    // use 600 items only
+    weatherData = weatherData.slice(-600)
 
     io.emit('update', item)
 

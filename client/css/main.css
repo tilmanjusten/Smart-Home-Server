@@ -18,11 +18,31 @@ body {
 }
 
 .wrapper {
+
+}
+
+.messages {
+
+}
+
+.error {
+    background: rgba(230, 20, 20, 0.3);
+    border: medium solid rgba(230, 20, 20, 1);
+    display: none;
+    margin: 3rem auto;
+    padding: 0.5em 1em;
+    width: 80vw;
+}
+
+.error--is-visible {
+    display: block;
+}
+
+.gauges {
     align-items: center;
     align-content: center;
     justify-content: space-around;
     display: flex;
-    min-height: 85vh;
 }
 
 .room {

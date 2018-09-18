@@ -12,8 +12,12 @@ const app = express()
 const expressPort = 3124
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
+const status = {
+    ok: true,
+    data: {}
+}
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
@@ -22,28 +26,42 @@ app.use(function(req, res, next) {
 
 // app.get('/weather-data.json', (req, res) => res.send({data: weatherData}))
 
-http.listen(expressPort, function(){
-    console.log('listening on *:3000');
-});
-
-// app.listen(expressPort, () => console.log(`Weather at home app listening on port ${expressPort}!`))
+http.listen(expressPort, console.log('listening on *:3000'));
 
 // Open errors will be emitted as an error event
 port.on('error', err => {
-    console.log('Error: ', err.message);
+    console.log('SerialPort Error: ', err.message);
+
+    status.ok = false
+    status.data = {
+        id: 'no sensordata',
+        message: err.message,
+        port: serialPortId
+    }
+
+    io.emit('status error', status.data)
 })
 
 // The open event is always emitted
 port.on('open', function () {
-    // open logic
+
 })
 
-io.on('connection', function(socket){
+io.on('connection', function (socket) {
     console.log('a user connected');
 
-    socket.on('disconnect', function(){
+    socket.on('disconnect', function () {
         console.log('user disconnected');
     });
+
+    socket.on('get status', () => {
+        console.log('Status ok: ', status.ok)
+        socket.emit('status', status)
+
+        if (!status.ok) {
+            socket.emit('status error', status.data)
+        }
+    })
 });
 
 parser.on('data', data => {

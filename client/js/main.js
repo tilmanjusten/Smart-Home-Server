@@ -5,6 +5,12 @@ const charts = {
     'PURL': null,
     'ODIN': null
 }
+let allChart = null
+const historyLatest = {
+    'INKE': [],
+    'PURL': [],
+    'ODIN': []
+}
 const deviceNames = {
     'INKE': 'Schlafzimmer',
     'PURL': 'Badezimmer',
@@ -43,7 +49,7 @@ function addItemToHistory(item) {
     history[item.deviceId].push(item)
 
     // crop history for every device
-    history[item.deviceId] = history[item.deviceId].slice(-240)
+    history[item.deviceId] = history[item.deviceId].slice(-500)
 }
 
 function addChartItem(item) {
@@ -57,6 +63,42 @@ function addChartItem(item) {
             y: item.te * 1
         }
     ])
+}
+
+function addAllChartItem(item) {
+    const data = []
+    const itemTime = item.date.getTime() / 1000
+
+    historyLatest[item.deviceId] = item
+
+    for (const deviceId in charts) {
+        if (item.deviceId === deviceId) {
+            data.push({
+                time: itemTime,
+                y: item.hu * 1
+            })
+            data.push({
+                time: itemTime,
+                y: item.te * 1
+            })
+        } else {
+            // get previous value
+            const prev = historyLatest[deviceId]
+            const hu = prev.hu * 1 || null
+            const te = prev.te * 1 || null
+
+            data.push({
+                time: itemTime,
+                y: hu
+            })
+            data.push({
+                time: itemTime,
+                y: te
+            })
+        }
+    }
+
+    allChart.push(data)
 }
 
 function updateGui(item) {
@@ -86,7 +128,6 @@ function showError(item) {
 socket.on('history', data => {
     data.forEach(addItemToHistory)
 
-
     // show latest data from history on page load
     for (const deviceId in history) {
         if (history.hasOwnProperty(deviceId) && typeof history[deviceId] === 'object') {
@@ -96,35 +137,67 @@ socket.on('history', data => {
         }
     }
 
+    // all devices in one chart
+    const allChartsData = []
+
     // chart data preparation
     for (const deviceId in history) {
         if (history.hasOwnProperty(deviceId) && typeof history[deviceId] === 'object') {
             const device = history[deviceId]
             const chartData = []
+            const huData = {
+                label: `Luftfeuchtigkeit ${deviceNames[deviceId]}`,
+                values: []
+            }
+            const teData = {
+                label: `Temperatur ${deviceNames[deviceId]}`,
+                values: []
+            }
 
-            console.log(device.length)
-
-            chartData.push(
-                {
-                    label: `Luftfeuchtigkeit ${deviceNames[deviceId]}`,
-                    values: []
-                },
-                {
-                    label: `Temperatur ${deviceNames[deviceId]}`,
-                    values: []
-                }
-            )
+            chartData.push(huData)
+            chartData.push(teData)
 
             charts[deviceId] = $(`#chart-${deviceId.toLowerCase()}`).epoch({
                 type: 'time.line',
                 data: chartData,
                 axes: ['left', 'right', 'bottom'],
                 windowSize: 120,
-                historySize: 240,
+                historySize: 20,
                 range: [0, 100]
             });
 
+            // all devices in one chart
+            allChartsData.push(huData)
+            allChartsData.push(teData)
+        }
+    }
+
+    allChart = $(`#chart-all`).epoch({
+        type: 'time.line',
+        data: allChartsData,
+        axes: ['left', 'right', 'bottom'],
+        windowSize: 60,
+        historySize: 120,
+        range: [10, 80]
+    });
+
+    // chart data preparation
+    for (const deviceId in history) {
+        if (history.hasOwnProperty(deviceId) && typeof history[deviceId] === 'object') {
+            const device = history[deviceId]
+
             device.forEach(addChartItem)
+            device.forEach(addAllChartItem)
         }
     }
 })
+
+function toggleFullScreen() {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        }
+    }
+}

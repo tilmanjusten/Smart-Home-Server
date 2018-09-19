@@ -31,16 +31,16 @@ app.use(function (req, res, next) {
 if (fs.existsSync(historyFileDest)) {
     weatherData = JSON.parse(fs.readFileSync(historyFileDest, 'utf8'))
 
-    console.log('Get history from file: ', weatherData.length)
+    console.log(`${new Date().toLocaleString()} -> Get history from file: ${weatherData.length}`)
 }
 
 // app.get('/weather-data.json', (req, res) => res.send({data: weatherData}))
 
-http.listen(expressPort, console.log('listening on *:3000'));
+http.listen(expressPort, console.log(`${new Date().toLocaleString()} -> HTTP server is listening on *:3000`));
 
 // Open errors will be emitted as an error event
 port.on('error', err => {
-    console.log('SerialPort Error: ', err.message);
+    console.log(`${new Date().toLocaleString()} -> SerialPort Error: ${err.message}`);
 
     status.ok = false
     status.data = {
@@ -58,14 +58,14 @@ port.on('open', function () {
 })
 
 io.on('connection', function (socket) {
-    console.log('a user connected');
+    console.log(`${new Date().toLocaleString()} -> A user connected`);
 
     socket.on('disconnect', function () {
-        console.log('user disconnected');
+        console.log(`${new Date().toLocaleString()} -> A user disconnected`);
     });
 
     socket.on('get status', () => {
-        console.log('Status ok: ', status.ok)
+        console.log(`${new Date().toLocaleString()} -> Status ok: ${status.ok}`)
         socket.emit('status', status)
 
         if (!status.ok) {
@@ -104,12 +104,10 @@ parser.on('data', data => {
 
     io.emit('update', item)
 
-    console.log(`${date.toLocaleString()}: ${humidity}% Luftfeuchtigkeit bei ${temperature}°C im ${deviceId}`)
+    console.log(`${date.toLocaleString()} -> ${humidity}% Luftfeuchtigkeit bei ${temperature}°C im ${deviceId}`)
 })
 
 cron.schedule('*/15 * * * *', () => {
-    console.log('Running Cron Job: Backing up weather data')
-
     const dirname = path.dirname(historyFileDest)
     const backupDest = historyFileDest.replace('.json', `.backup.json`)
     // const copyFilename = historyFileDest.replace('.json', `.${new Date().getTime()}.json`)
@@ -124,11 +122,10 @@ cron.schedule('*/15 * * * *', () => {
     // backup existing file
     if (fs.existsSync(historyFileDest)) {
         // fs.copyFileSync(historyFileDest, copyFilename)
-        // console.log('Created database backup file %s', copyFilename)
+        // console.log(`${new Date().toLocaleString()} -> Created database backup file ${copyFilename}`)
 
         fs.rename(historyFileDest, backupDest)
     }
-
 
     fs.writeFile(historyFileDest, JSON.stringify(weatherData), 'utf8', err => {
         if (err) {
@@ -137,7 +134,7 @@ cron.schedule('*/15 * * * *', () => {
             // remove backup file
             fs.unlink(backupDest)
 
-            console.log('Created new database file')
+            console.log(`${new Date().toLocaleString()} -> Created new database file`)
         }
     });
 })

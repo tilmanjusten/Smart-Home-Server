@@ -4,12 +4,12 @@
   "description": "Show weather data.",
   "main": "app/index.js",
   "scripts": {
-    "develop-app": "NODE_ENV=develop nodemon app/index.js --ignore \"client/ package.json\"",
+    "develop-app": "NODE_ENV=develop nodemon app/index.js",
     "develop-client": "NODE_ENV=develop nodemon client-server.js --ignore app/",
     "start-app": "node app/index.js",
     "start-client": "node client-server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy": "rsync -av -e ssh . raspi:/home/pi/weather-at-home --exclude=node_modules/ --exclude=.idea/ --exclude=.git/ --delete-after"
+    "deploy": "rsync -av -e ssh . raspi:/home/pi/weather-at-home --exclude=node_modules/ --exclude=.idea/ --exclude=.git/ --exclude=data/ --delete-after"
   },
   "repository": "",
   "author": "Tilman Justen",
@@ -18,7 +18,9 @@
     "browser-sync": "^2.1.6",
     "epoch-charting": "^0.8.4",
     "express": "^4.16.3",
+    "fs-extra": "^7.0.0",
     "jquery": "^3.3.1",
+    "node-cron": "^2.0.1",
     "serialport": "^7.0.2",
     "socket.io": "^2.1.1"
   }

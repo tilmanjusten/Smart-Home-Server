@@ -1,6 +1,6 @@
 const SerialPort = require('serialport')
 const Readline = require('@serialport/parser-readline')
-const serialPortId = process.env.NODE_ENV === 'develop' ? '/dev/cu.usbmodem1421' : '/dev/ttyACM0'
+const serialPortId = process.env.NODE_ENV === 'develop' ? '/dev/cu.usbmodem1411' : '/dev/ttyUSB0' // '/dev/ttyACM0'
 const port = new SerialPort(serialPortId, {
     baudRate: 9600
 })
@@ -16,6 +16,10 @@ const status = {
     ok: true,
     data: {}
 }
+const cron = require('node-cron')
+const fs = require('fs-extra')
+const path = require('path')
+const historyFileDest = path.resolve(__dirname, '../data/', 'weatherdata.json')
 
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
@@ -23,6 +27,12 @@ app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     next();
 });
+
+if (fs.existsSync(historyFileDest)) {
+    weatherData = JSON.parse(fs.readFileSync(historyFileDest, 'utf8'))
+
+    console.log('Get history from file: ', weatherData.length)
+}
 
 // app.get('/weather-data.json', (req, res) => res.send({data: weatherData}))
 
@@ -90,10 +100,44 @@ parser.on('data', data => {
 
     weatherData.push(item)
 
-    // use 600 items only
-    weatherData = weatherData.slice(-600)
+    weatherData = weatherData.slice(-10000)
 
     io.emit('update', item)
 
     console.log(`${date.toLocaleString()}: ${humidity}% Luftfeuchtigkeit bei ${temperature}°C im ${deviceId}`)
+})
+
+cron.schedule('*/15 * * * *', () => {
+    console.log('Running Cron Job: Backing up weather data')
+
+    const dirname = path.dirname(historyFileDest)
+    const backupDest = historyFileDest.replace('.json', `.backup.json`)
+    // const copyFilename = historyFileDest.replace('.json', `.${new Date().getTime()}.json`)
+
+    // Create destination directory if not exists
+    try {
+        fs.accessSync(dirname, fs.R_OK | fs.W_OK);
+    } catch (err) {
+        fs.ensureDir(dirname);
+    }
+
+    // backup existing file
+    if (fs.existsSync(historyFileDest)) {
+        // fs.copyFileSync(historyFileDest, copyFilename)
+        // console.log('Created database backup file %s', copyFilename)
+
+        fs.rename(historyFileDest, backupDest)
+    }
+
+
+    fs.writeFile(historyFileDest, JSON.stringify(weatherData), 'utf8', err => {
+        if (err) {
+            console.error(err)
+        } else {
+            // remove backup file
+            fs.unlink(backupDest)
+
+            console.log('Created new database file')
+        }
+    });
 })

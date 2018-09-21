@@ -16,6 +16,13 @@ const deviceNames = {
     'PURL': 'Badezimmer',
     'ODIN': 'Wohnzimmer'
 }
+const epochOptions = {
+    type: 'time.line',
+    axes: ['left', 'right', 'bottom'],
+    fps: 12,
+    margins: {top: 10, right: 25, bottom: 20, left: 25},
+    range: [10, 80]
+}
 
 
 socket.emit('get status')
@@ -143,7 +150,6 @@ socket.on('history', data => {
     // chart data preparation
     for (const deviceId in history) {
         if (history.hasOwnProperty(deviceId) && typeof history[deviceId] === 'object') {
-            const device = history[deviceId]
             const chartData = []
             const huData = {
                 label: `Luftfeuchtigkeit ${deviceNames[deviceId]}`,
@@ -158,12 +164,28 @@ socket.on('history', data => {
             chartData.push(teData)
 
             charts[deviceId] = $(`#chart-${deviceId.toLowerCase()}`).epoch({
-                type: 'time.line',
+                axes: epochOptions.axes,
                 data: chartData,
-                axes: ['left', 'right', 'bottom'],
-                windowSize: 120,
-                historySize: 20,
-                range: [0, 100]
+                fps: epochOptions.fps,
+                historySize: 600,
+                margins: epochOptions.margins,
+                queueSize: 500,
+                range: epochOptions.range,
+                tickFormats: {
+                    bottom: function (tstamp) {
+                        // console.log(tstamp)
+                        // const date = new Date(tstamp)
+                        // const hours = date.getHours().toString()
+                        // let minutes = date.getMinutes().toString()
+                        //
+                        // minutes = minutes.length === 1 ? `0${minutes}` : minutes
+
+                        // return `${hours}:${minutes}`
+                        return ''
+                    }
+                },
+                type: epochOptions.type,
+                windowSize: 500
             });
 
             // all devices in one chart
@@ -173,12 +195,15 @@ socket.on('history', data => {
     }
 
     allChart = $(`#chart-all`).epoch({
-        type: 'time.line',
+        axes: epochOptions.axes,
         data: allChartsData,
-        axes: ['left', 'right', 'bottom'],
-        windowSize: 60,
+        fps: epochOptions.fps,
         historySize: 120,
-        range: [10, 80]
+        margins: epochOptions.margins,
+        queueSize: 120,
+        range: epochOptions.range,
+        type: epochOptions.type,
+        windowSize: 120
     });
 
     // chart data preparation

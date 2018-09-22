@@ -117,7 +117,7 @@ function drawChart() {
     if (items.length) {
         const history = items.map(processItemForChart)
 
-        data = data.concat(history)
+        data = data.concat(history.slice(-1200))
     } else {
         data = data.push([0, 0, 0, 0, 0, 0, 0])
     }
@@ -128,6 +128,40 @@ function drawChart() {
     chart = new google.visualization.LineChart(document.getElementById('full-chart'));
 
     chart.draw(chartData, {
-        height: 300
+        // legend: 'none',
+        height: 300,
+        // curveType: 'function',
+        series: {
+            0: {
+                color: '#e2431e',
+                // lineDashStyle: [5, 5]
+            },
+            1: {
+                color: '#e7711b',
+                // lineDashStyle: [5, 5]
+            },
+            // 2: { color: '#f1ca3a' },
+            2: {
+                color: '#6f9654'
+            },
+            3: {
+                color: '#8a9641'
+            },
+            4: {
+                color: '#1c91c0'
+            },
+            5: {
+                color: '#5696c0'
+            },
+            // 5: { color: '#43459d' },
+        },
+        hAxis: {
+
+        },
+        vAxis: {
+            format: 'percent',
+            maxValue: 80,
+            minValue: 10
+        },
     });
 }

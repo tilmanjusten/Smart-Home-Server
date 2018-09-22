@@ -16,10 +16,8 @@
   "license": "ISC",
   "dependencies": {
     "browser-sync": "^2.1.6",
-    "epoch-charting": "^0.8.4",
     "express": "^4.16.3",
     "fs-extra": "^7.0.0",
-    "jquery": "^3.3.1",
     "node-cron": "^2.0.1",
     "serialport": "^7.0.2",
     "socket.io": "^2.1.1"

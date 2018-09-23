@@ -23,6 +23,8 @@ socket.on('update', item => {
 
     chartData.addRow(processItemForChart(item))
 
+    chartData = chartData.slice(-1200)
+
     chart.draw(chartData)
 
     item.data.forEach(updateGui)

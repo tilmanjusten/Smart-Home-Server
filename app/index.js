@@ -1,11 +1,10 @@
 const SerialPort = require('serialport')
 const Readline = require('@serialport/parser-readline')
-const serialPortId = process.env.NODE_ENV === 'develop' ? '/dev/cu.usbmodem1411' : '/dev/ttyUSB0' // '/dev/ttyACM0'
+const serialPortId = process.env.NODE_ENV === 'develop' ? '/dev/cu.usbmodem1421' : '/dev/ttyUSB0' // '/dev/ttyACM0'
 const port = new SerialPort(serialPortId, {
     baudRate: 9600
 })
 const parser = port.pipe(new Readline({delimiter: '\r\n'}))
-const dataPattern = /^([A-Z]{4,5})0?HU(\d{3})TE((?:[+|-])\d{3})/
 const express = require('express')
 const app = express()
 const expressPort = 3000
@@ -103,7 +102,5 @@ parser.on('data', data => {
 
     io.emit('update', item)
 
-    console.log(`${item.date.toLocaleString()} -> ${item.hu}% Luftfeuchtigkeit bei ${item.te}°C im ${item.deviceId}`)
+    console.log(`${item.date.toLocaleString()} -> New data: ${data}`)
 })
-
-

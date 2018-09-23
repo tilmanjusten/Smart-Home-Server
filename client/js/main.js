@@ -21,8 +21,11 @@ socket.on('status', status => {
 socket.on('update', item => {
     item = processItem(item)
 
-    chartData.addRows(processItemForChart(item))
-    updateGui(item)
+    chartData.addRow(processItemForChart(item))
+
+    chart.draw(chartData)
+
+    item.data.forEach(updateGui)
 })
 
 socket.on('status error', item => {
@@ -81,8 +84,7 @@ function toggleFullScreen() {
 }
 
 function processItemForChart(item) {
-    const d = item.date
-    const res = [`${d.getHours()}:${d.getMinutes()}`]
+    const res = [item.date]
 
     item.data.map(v => {
         if (v === null) {
@@ -105,12 +107,12 @@ function drawChart() {
     let data = [
         [
             'Zeit',
-            'Luftfeuchtigkeit Schlafzimmer',
-            'Temperatur Schlafzimmer',
-            'Luftfeuchtigkeit Wohnzimmer',
-            'Temperatur Wohnzimmer',
-            'Luftfeuchtigkeit Badezimmer',
-            'Temperatur Badezimmer'
+            'Lf.. Schlafzimmer',
+            'Te. Schlafzimmer',
+            'Lf. Wohnzimmer',
+            'Te. Wohnzimmer',
+            'Lf. Badezimmer',
+            'Te. Badezimmer'
         ]
     ]
 
@@ -128,7 +130,10 @@ function drawChart() {
     chart = new google.visualization.LineChart(document.getElementById('full-chart'));
 
     chart.draw(chartData, {
-        // legend: 'none',
+        legend: {
+            position: 'top',
+            fontSize: 12
+        },
         height: 300,
         // curveType: 'function',
         series: {
@@ -156,12 +161,23 @@ function drawChart() {
             // 5: { color: '#43459d' },
         },
         hAxis: {
-
+            title: 'Zeit',
+            format:'d.MM., H:mm',
+            fontSize: 13
         },
         vAxis: {
-            format: 'percent',
-            maxValue: 80,
-            minValue: 10
+            format: '#',
+            title: '%'
+        },
+        trendlines: {
+
+        },
+        explorer: {
+            axis: 'horizontal',
+            actions: ['dragToPan', 'dragToZoom', 'rightClickToReset'],
+            maxZoomIn: 0.25,
+            maxZoomOut: 2,
+            zoomDelta: 1.5
         },
     });
 }

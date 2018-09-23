@@ -1,5 +1,6 @@
 const fs = require('fs-extra')
 
+const dataPattern = /^([A-Z]{4,5})0?HU(\d{3})TE((?:[+|-])\d{3})/
 const data = []
 let devices = []
 const history = {}
@@ -75,8 +76,6 @@ function addItem(item) {
 function parseHistory(rawData) {
     // get unique set of device ids
     devices = [...new Set(rawData.map(item => item.deviceId))].concat(devices).sort()
-
-    console.log(devices)
 
     return rawData.map(processRawItem)
 }

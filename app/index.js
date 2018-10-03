@@ -1,6 +1,6 @@
 const SerialPort = require('serialport')
 const Readline = require('@serialport/parser-readline')
-const serialPortId = process.env.NODE_ENV === 'develop' ? '/dev/cu.usbmodem1421' : '/dev/ttyUSB0' // '/dev/ttyACM0'
+const serialPortId = process.env.NODE_ENV === 'develop' ? '/dev/tty.usbmodem14201' : '/dev/ttyUSB0' // '/dev/ttyACM0'
 const port = new SerialPort(serialPortId, {
     baudRate: 9600
 })
@@ -17,7 +17,7 @@ const status = {
 const path = require('path')
 const weatherData = require('./lib/weather-data')
 
-weatherData.addDataFromFile(path.resolve(__dirname, '../data/', 'weatherdata.json'))
+weatherData.importDatabaseFile(path.resolve(process.cwd(), 'data/', 'weatherdata.json'))
 
 if (weatherData.getItems().length > 0) {
     console.log(`${new Date().toLocaleString()} -> Get history from file: ${weatherData.getItems().length} items found`)
@@ -85,6 +85,7 @@ io.on('connection', function (socket) {
 
     socket.on('get status', () => {
         console.log(`${new Date().toLocaleString()} -> Status ok: ${status.ok}`)
+        
         socket.emit('status', status)
 
         if (!status.ok) {
@@ -100,7 +101,11 @@ io.on('connection', function (socket) {
 parser.on('data', data => {
     const item = weatherData.addRawItem(data)
 
-    io.emit('update', item)
+    if (item !== null) {
+      io.emit('update', item)
 
-    console.log(`${item.date.toLocaleString()} -> New data: ${data}`)
+      console.log(`${item.date.toLocaleString()} -> New data: ${data}`)
+    } else {
+      console.error(`${new Date().toLocaleString()} -> Can't read data '${data}'`)
+    }
 })

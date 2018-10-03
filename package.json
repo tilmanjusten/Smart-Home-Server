@@ -9,7 +9,8 @@
     "start-app": "node app/index.js",
     "start-client": "node client-server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy": "rsync -av -e ssh . raspi:/home/pi/weather-at-home --exclude=node_modules/ --exclude=.idea/ --exclude=.git/ --exclude=data/ --delete-after"
+    "deploy": "rsync -av -e ssh . raspi:/home/pi/weather-at-home --exclude=node_modules/ --exclude=.idea/ --exclude=.git/ --exclude=data/ --delete-after",
+    "serialport-list": "serialport-list"
   },
   "repository": "",
   "author": "Tilman Justen",
@@ -21,5 +22,8 @@
     "node-cron": "^2.0.1",
     "serialport": "^7.0.2",
     "socket.io": "^2.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.4"
   }
 }

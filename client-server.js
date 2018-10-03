@@ -5,5 +5,6 @@ browserSync({
     files: ['client/*.html', 'client/css/*.css', 'client/js/*.js'],
     port: 3000,
     watch: true,
-    cors: true
+    cors: true,
+    open: false
 });

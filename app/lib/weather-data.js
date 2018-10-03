@@ -12,9 +12,12 @@ const historyFileDest = path.resolve(process.cwd(), 'data/weatherdata.json')
 function importDatabaseFile(filepath) {
     if (fs.existsSync(filepath)) {
         const content = fs.readFileSync(filepath, 'utf8')
+        const jsonContent = JSON.parse(content)
+
+        jsonContent.forEach(item => historyData.push(item))
 
         try {
-            const parsed = parseHistory(JSON.parse(content))
+            const parsed = parseHistory(jsonContent)
 
             parsed.map(addItem)
 
@@ -100,12 +103,11 @@ function getLatestItem() {
 
 function parseHistory(rawData) {
     // get unique set of device ids
-    devices = [...new Set(rawData.map(item => item.deviceId))]
-        .concat(devices)
+    devices = [...new Set(rawData.map(item => item.deviceId).concat(devices))]
         .filter(item => item !== undefined)
         .sort()
 
-    return rawData.map(item => historyData.push(item)).map(processRawItem)
+    return rawData.map(processRawItem)
 }
 
 function getItems() {

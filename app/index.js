@@ -1,34 +1,21 @@
-const SerialPort = require('serialport')
-const Readline = require('@serialport/parser-readline')
 const serialPortId = process.env.NODE_ENV === 'develop' ? '/dev/tty.usbmodem14201' : '/dev/ttyUSB0' // '/dev/ttyACM0'
-const port = new SerialPort(serialPortId, {
-    baudRate: 9600
-})
-const parser = port.pipe(new Readline({delimiter: '\r\n'}))
 const express = require('express')
 const app = express()
 const expressPort = 3000
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
-const status = {
-    ok: true,
-    data: {}
-}
+const serial = require('./lib/serial')
 const path = require('path')
 const weatherData = require('./lib/weather-data')
+const state = require('./lib/state')
 
+serial(serialPortId, io)
 weatherData.importDatabaseFile(path.resolve(process.cwd(), 'data/', 'weatherdata.json'))
-
-if (weatherData.getItems().length > 0) {
-    console.log(`${new Date().toLocaleString()} -> Get history from file: ${weatherData.getItems().length} items found`)
-} else {
-    console.log(`${new Date().toLocaleString()} -> No history found`)
-}
 
 app.use(express.static('client', {icons: true}))
 
 app.use(function (req, res, next) {
-    // res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     next();
@@ -36,7 +23,7 @@ app.use(function (req, res, next) {
 
 app.get('/', (req, res) => {
     const options = {
-        root: __dirname + '/../client/',
+        root: process.cwd() + '/client/',
         dotfiles: 'deny',
         headers: {
             'x-timestamp': Date.now(),
@@ -57,25 +44,6 @@ app.get('/', (req, res) => {
 
 server.listen(expressPort, console.log(`${new Date().toLocaleString()} -> HTTP server is listening on *:${expressPort}`));
 
-// Open errors will be emitted as an error event
-port.on('error', err => {
-    console.log(`${new Date().toLocaleString()} -> SerialPort Error: ${err.message}`);
-
-    status.ok = false
-    status.data = {
-        id: 'no sensordata',
-        message: err.message,
-        port: serialPortId
-    }
-
-    io.emit('status error', status.data)
-})
-
-// The open event is always emitted
-port.on('open', function () {
-
-})
-
 io.on('connection', function (socket) {
     console.log(`${new Date().toLocaleString()} -> A user connected`);
 
@@ -84,12 +52,12 @@ io.on('connection', function (socket) {
     });
 
     socket.on('get status', () => {
-        console.log(`${new Date().toLocaleString()} -> Status ok: ${status.ok}`)
+        console.log(`${new Date().toLocaleString()} -> Status ok: ${state.status.ok}`)
         
-        socket.emit('status', status)
+        socket.emit('status', state.status)
 
-        if (!status.ok) {
-            socket.emit('status error', status.data)
+        if (!state.status.ok) {
+            socket.emit('status error', state.status.data)
         }
     })
 
@@ -97,15 +65,3 @@ io.on('connection', function (socket) {
         socket.emit('history', weatherData.getItems())
     })
 });
-
-parser.on('data', data => {
-    const item = weatherData.addRawItem(data)
-
-    if (item !== null) {
-      io.emit('update', item)
-
-      console.log(`${item.date.toLocaleString()} -> New data: ${data}`)
-    } else {
-      console.error(`${new Date().toLocaleString()} -> Can't read data '${data}'`)
-    }
-})

@@ -7,10 +7,22 @@ const io = require('socket.io')(server);
 const serial = require('./lib/serial')
 const path = require('path')
 const weatherData = require('./lib/weather-data')
-const state = require('./lib/state')
+const statusStore = require('./store/statusstore')
+const itemStore = require('./store/itemstore')
+
+statusStore.events.subscribe('stateChange', status => {
+    io.emit('status error', status.data)
+})
+
+weatherData.importDatabaseFile(path.resolve(process.cwd(), 'data/', 'weatherdata.json'))
+
+// subscribe to itemstore after importing the database
+itemStore.events.subscribe('stateChange', state => {
+    console.log('itemstore stateChange')
+    io.emit('update', state.items.slice(-1))
+})
 
 serial(serialPortId, io)
-weatherData.importDatabaseFile(path.resolve(process.cwd(), 'data/', 'weatherdata.json'))
 
 app.use(express.static('client', {icons: true}))
 
@@ -18,6 +30,7 @@ app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    
     next();
 });
 
@@ -54,10 +67,12 @@ io.on('connection', function (socket) {
     socket.on('get status', () => {
         console.log(`${new Date().toLocaleString()} -> Status ok: ${state.status.ok}`)
         
-        socket.emit('status', state.status)
+        const status = statusStore.get('status')
 
-        if (!state.status.ok) {
-            socket.emit('status error', state.status.data)
+        socket.emit('status', status)
+
+        if (!status.ok) {
+            socket.emit('status error', status.data)
         }
     })
 

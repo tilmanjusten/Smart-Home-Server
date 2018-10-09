@@ -1,121 +1,61 @@
 const fs = require('fs-extra')
 const cron = require('node-cron')
 const path = require('path')
-
-const dataPattern = /^([A-Z]{4,5})0?HU(\d{3})TE((?:[+|-])\d{3})/
-const data = []
-const historyData = []
 let devices = ['INKE', 'ODIN', 'PURL']
-const historyMap = {}
 const historyFileDest = path.resolve(process.cwd(), 'data/weatherdata.json')
+const itemStore = require('../store/itemstore')
+
+devices.forEach(deviceName => itemStore.dispatch('addDevice', deviceName))
 
 function importDatabaseFile(filepath) {
     if (fs.existsSync(filepath)) {
         const content = fs.readFileSync(filepath, 'utf8')
         const jsonContent = JSON.parse(content)
 
-        jsonContent.forEach(item => historyData.push(item))
+        try {
+            getDevicesFromHistory(jsonContent)
+
+            console.log(
+                `%s -> Got %d devices from database: %s`,
+                new Date().toLocaleString(),
+                itemStore.get('devices').length,
+                itemStore.get('devices').join(', ')
+            )
+        } catch (err) {
+            console.error(
+                `%s -> Getting devices from database failed: %s`,
+                new Date().toLocaleDateString(),
+                err
+            )
+
+            return false
+        }
 
         try {
-            const parsed = parseHistory(jsonContent)
+            jsonContent.map(item => itemStore.dispatch('addItem', item))
 
-            parsed.map(addItem)
-
-            console.log(`${new Date().toLocaleString()} -> Get history from file: ${getItems().length} items found`)
-
-            return data
+            console.log(`${new Date().toLocaleString()} -> Got history from database: ${itemStore.get('items').length} items found`)
         } catch (err) {
-            console.error(`${new Date().toLocaleDateString()} -> History file is empty (${err})`)
+            console.error(`${new Date().toLocaleDateString()} -> Database is empty: ${err}`)
 
-            return []
+            return false
         }
+
+        return true
     } else {
-        console.log(`${new Date().toLocaleString()} -> No history found`)
+        console.log(`${new Date().toLocaleString()} -> No database found.`)
 
-        return []
+        return false
     }
 }
 
-/**
- * Add item for every datetime
- *
- * @param item
- * @returns {{date: string, data: Array}}
- */
-function processRawItem(item) {
-    const result = {
-        date: item.date,
-        data: []
-    }
-
-    historyMap[item.deviceId] = item
-
-    devices.forEach(deviceId => {
-        if (item.deviceId === deviceId) {
-            result.data.push(item)
-        } else if (historyMap[deviceId]) {
-            result.data.push(historyMap[deviceId])
-        } else {
-            result.data.push(null)
-        }
-    })
-
-    return result
-}
-
-function addRawItem(data) {
-    const dataMatch = data.match(dataPattern)
-
-    if (!dataMatch) {
-        return null
-    }
-
-    const date = new Date()
-    const deviceId = dataMatch[1]
-    const humidity = dataMatch[2].replace('0', '')
-    const temperature = dataMatch[3].replace('0', '')
-    const rawItem = {
-        date: date.toUTCString(),
-        deviceId,
-        hu: humidity,
-        te: temperature
-    }
-    const item = processRawItem(rawItem)
-
-    addHistoryItem(rawItem)
-    
-    return addItem(item)
-}
-
-function addItem(item) {
-    data.push(item)
-
-    return item
-}
-
-function addHistoryItem(item) {
-    historyData.push(item)
-}
-
-function getLatestItem() {
-    return data.slice(-1)
-}
-
-function parseHistory(rawData) {
+function getDevicesFromHistory(rawData) {
     // get unique set of device ids
-    devices = [...new Set(rawData.map(item => item.deviceId).concat(devices))]
+    let historyDevices = [...new Set(rawData.map(item => item.deviceId))]
         .filter(item => item !== undefined)
         .sort()
 
-    return rawData.map(processRawItem)
-}
-
-function getItems() {
-    return data
-}
-
-function getHistoryItems() {
-    return historyData
+    historyDevices.forEach(deviceName => itemStore.dispatch('addDevice', deviceName))
 }
 
 cron.schedule('*/10 * * * *', () => {
@@ -134,7 +74,7 @@ cron.schedule('*/10 * * * *', () => {
         fs.rename(historyFileDest, backupDest)
     }
 
-    fs.writeFile(historyFileDest, JSON.stringify(getHistoryItems()), 'utf8', err => {
+    fs.writeFile(historyFileDest, JSON.stringify(itemStore.get('items').map(item => item.origin)), 'utf8', err => {
         if (err) {
             console.error(`${new Date().toLocaleString()} -> Can not create database file due to an error '${err}'`)
         } else {
@@ -143,15 +83,11 @@ cron.schedule('*/10 * * * *', () => {
                 fs.unlink(backupDest)
             }
 
-            console.log(`${new Date().toLocaleString()} -> Store ${getHistoryItems().length} items in database file  '${historyFileDest}'`)
+            console.log(`${new Date().toLocaleString()} -> Store ${itemStore.get('items').length} items in database file  '${historyFileDest}'`)
         }
     });
 })
 
 module.exports = {
-    parseHistory,
-    importDatabaseFile,
-    addRawItem,
-    getItems,
-    getLatestItem
+    importDatabaseFile
 }

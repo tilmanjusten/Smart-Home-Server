@@ -3,7 +3,9 @@ const state = {
     ok: true
 }
 const getters = {
-    status: (() => state.status)()
+    status() {
+        return state.status
+    }
 }
 const actions = {
     setStatus: (context, payload) => {

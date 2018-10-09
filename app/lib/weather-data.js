@@ -18,8 +18,8 @@ function importDatabaseFile(filepath) {
             console.log(
                 `%s -> Got %d devices from database: %s`,
                 new Date().toLocaleString(),
-                itemStore.get('devices').length,
-                itemStore.get('devices').join(', ')
+                itemStore.getters.devices().length,
+                itemStore.getters.devices().join(', ')
             )
         } catch (err) {
             console.error(
@@ -34,7 +34,7 @@ function importDatabaseFile(filepath) {
         try {
             jsonContent.map(item => itemStore.dispatch('addItem', item))
 
-            console.log(`${new Date().toLocaleString()} -> Got history from database: ${itemStore.get('items').length} items found`)
+            console.log(`${new Date().toLocaleString()} -> Got history from database: ${itemStore.getters.history().length} items found`)
         } catch (err) {
             console.error(`${new Date().toLocaleDateString()} -> Database is empty: ${err}`)
 
@@ -64,9 +64,9 @@ cron.schedule('*/10 * * * *', () => {
 
     // Create destination directory if not exists
     try {
-        fs.accessSync(dirname, fs.R_OK | fs.W_OK);
+        fs.accessSync(dirname, fs.R_OK | fs.W_OK)
     } catch (err) {
-        fs.ensureDir(dirname);
+        fs.ensureDir(dirname)
     }
 
     // backup existing file
@@ -74,7 +74,7 @@ cron.schedule('*/10 * * * *', () => {
         fs.rename(historyFileDest, backupDest)
     }
 
-    fs.writeFile(historyFileDest, JSON.stringify(itemStore.get('items').map(item => item.origin)), 'utf8', err => {
+    fs.writeFile(historyFileDest, JSON.stringify(itemStore.getters.history()), 'utf8', err => {
         if (err) {
             console.error(`${new Date().toLocaleString()} -> Can not create database file due to an error '${err}'`)
         } else {
@@ -83,9 +83,9 @@ cron.schedule('*/10 * * * *', () => {
                 fs.unlink(backupDest)
             }
 
-            console.log(`${new Date().toLocaleString()} -> Store ${itemStore.get('items').length} items in database file  '${historyFileDest}'`)
+            console.log(`${new Date().toLocaleString()} -> Store ${itemStore.getters.history().length} items in database file  '${historyFileDest}'`)
         }
-    });
+    })
 })
 
 module.exports = {

@@ -29,8 +29,15 @@ function processDatabaseItem(devices, payload) {
 }
 
 const getters = {
-    items: (() => state.items)(),
-    devices: (() => state.devices)()
+    items() {
+        return state.items
+    },
+    devices() {
+        return state.devices
+    },
+    history() {
+        return state.items.map(item => item.origin)
+    }
 }
 
 const actions = {
@@ -41,7 +48,7 @@ const actions = {
             return null
         }
 
-        const processed = processDatabaseItem(context.get('devices'), item)
+        const processed = processDatabaseItem(context.getters.devices(), item)
 
         actions.addItem(context, processed)
     },
@@ -51,7 +58,7 @@ const actions = {
         }
 
         if (!payload.hasOwnProperty('data')) {
-            payload = processDatabaseItem(context.get('devices'), payload)
+            payload = processDatabaseItem(context.getters.devices(), payload)
         }
 
         context.commit('addItem', payload)

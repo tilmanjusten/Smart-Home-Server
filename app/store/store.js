@@ -61,14 +61,6 @@ class Store {
 
         return true
     }
-
-    get(getterKey) {
-        if (!this.getters.hasOwnProperty(getterKey)) {
-            throw new Error(`Getter "${getterKey}" doesn't exist.`)
-        }
-
-        return this.getters[getterKey]
-    }
 }
 
 module.exports = Store

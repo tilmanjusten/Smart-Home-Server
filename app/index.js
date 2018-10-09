@@ -67,7 +67,7 @@ io.on('connection', function (socket) {
     socket.on('get status', () => {
         console.log(`${new Date().toLocaleString()} -> Status ok: ${state.status.ok}`)
         
-        const status = statusStore.get('status')
+        const status = statusStore.getters.status()
 
         socket.emit('status', status)
 

@@ -39,7 +39,7 @@ class Store {
 
         console.groupCollapsed(`ACTION: ${actionKey}`)
 
-        this.actions[actionKey](this, payload)
+        this.actions[actionKey].call(this, this, payload)
 
         console.groupEnd()
 
@@ -53,7 +53,7 @@ class Store {
             return false
         }
 
-        let newState = this.mutations[mutationKey](this.state, payload)
+        let newState = this.mutations[mutationKey].call(this, this.state, payload)
 
         this.state = Object.assign(this.state, newState)
         

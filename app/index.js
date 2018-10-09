@@ -11,7 +11,7 @@ const statusStore = require('./store/statusstore')
 const itemStore = require('./store/itemstore')
 
 statusStore.events.subscribe('stateChange', status => {
-    io.emit('status error', status.data)
+    io.emit('status', status)
 })
 
 weatherData.importDatabaseFile(path.resolve(process.cwd(), 'data/', 'weatherdata.json'))

@@ -14,9 +14,7 @@ const actions = {
 }
 const mutations = {
     setStatus(state, status) {
-        const newState = Object.assign({}, state, status)
-
-        return newState
+        return Object.assign({}, state, status)
     }
 }
 

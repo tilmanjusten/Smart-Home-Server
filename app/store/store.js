@@ -37,11 +37,7 @@ class Store {
             return false
         }
 
-        console.groupCollapsed(`${new Date().toLocaleDateString()} -> Dispatched ${actionKey}`)
-
         this.actions[actionKey].call(this, this, payload)
-
-        console.groupEnd()
 
         return true
     }

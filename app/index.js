@@ -18,12 +18,11 @@ statusStore.events.subscribe('stateChange', status => {
 weatherData.importDatabaseFile(path.resolve(process.cwd(), 'data/', 'weatherdata.json'))
 database.setup({
     dest: path.resolve(process.cwd(), 'data/', 'weatherdata.json'),
-    cronInterval: '*/10 * * * *'
+    cronInterval: '*/2 * * * *'
 })
 
 // subscribe to itemstore after importing the database
 itemStore.events.subscribe('stateChange', state => {
-    console.log('itemstore stateChange')
     io.emit('update', state.items.slice(-1))
 })
 

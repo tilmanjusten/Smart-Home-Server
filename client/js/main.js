@@ -1,7 +1,7 @@
-const socket = io('http://localhost:3000');
+const socket = io(location.origin)
 let chart
 let items = []
-let chartData = [];
+let chartData = []
 const chartOptions = {
     legend: {
         position: 'top',
@@ -54,9 +54,9 @@ const chartOptions = {
     },
 }
 
-google.charts.load('current', { 'packages': ['corechart'] });
+google.charts.load('current', { 'packages': ['corechart'] })
 // Set a callback to run when the Google Visualization API is loaded.
-google.charts.setOnLoadCallback(initChart);
+google.charts.setOnLoadCallback(initChart)
 
 socket.emit('get status')
 
@@ -70,7 +70,6 @@ socket.on('status', status => {
 
 socket.on('update', item => {
     item = processItem(item)
-
     item.data.forEach(updateGui)
 
     // Init chart on first update of history is empty
@@ -79,7 +78,6 @@ socket.on('update', item => {
     }
 
     if (chart !== undefined) {
-        console.log(chart, chartData)
         chartData.addRow(processItemForChart(item))
 
         // chartData = chartData.slice(-1200)
@@ -103,17 +101,19 @@ function updateGui(item) {
         return null
     }
 
-    const el = document.getElementById(item.deviceId)
+    const el = document.getElementById(`${item.deviceId}-${item.type}`)
 
     if (!el) {
         return
     }
 
-    const elHumidity = el.querySelector('.humidity .value')
-    const elTemperature = el.querySelector('.temperature .value')
+    if (item.type === 'DHT22') {
+        const elHumidity = el.querySelector('.humidity .value')
+        const elTemperature = el.querySelector('.temperature .value')
 
-    elHumidity.innerHTML = item.hu + elHumidity.dataset.unit
-    elTemperature.innerHTML = item.te + elTemperature.dataset.unit
+        elHumidity.innerHTML = item.hu + elHumidity.dataset.unit
+        elTemperature.innerHTML = item.te + elTemperature.dataset.unit
+    }
 }
 
 function showError(item) {
@@ -145,10 +145,10 @@ socket.on('history', data => {
 
 function toggleFullScreen() {
     if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen();
+        document.documentElement.requestFullscreen()
     } else {
         if (document.exitFullscreen) {
-            document.exitFullscreen();
+            document.exitFullscreen()
         }
     }
 }
@@ -197,10 +197,10 @@ function drawChart() {
         data.push([0, 0, 0, 0, 0, 0, 0])
     }
 
-    chartData = new google.visualization.arrayToDataTable(data);
+    chartData = new google.visualization.arrayToDataTable(data)
 
     // Instantiate and draw our chart, passing in some options.
-    chart = new google.visualization.LineChart(document.getElementById('full-chart'));
+    chart = new google.visualization.LineChart(document.getElementById('full-chart'))
 
-    chart.draw(chartData, chartOptions);
+    chart.draw(chartData, chartOptions)
 }

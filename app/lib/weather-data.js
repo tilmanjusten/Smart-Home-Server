@@ -1,8 +1,5 @@
 const fs = require('fs-extra')
-const cron = require('node-cron')
-const path = require('path')
 let devices = ['INKE', 'ODIN', 'PURL']
-const historyFileDest = path.resolve(process.cwd(), 'data/weatherdata.json')
 const itemStore = require('../store/itemstore')
 
 devices.forEach(deviceName => itemStore.dispatch('addDevice', deviceName))
@@ -57,36 +54,6 @@ function getDevicesFromHistory(rawData) {
 
     historyDevices.forEach(deviceName => itemStore.dispatch('addDevice', deviceName))
 }
-
-cron.schedule('*/10 * * * *', () => {
-    const dirname = path.dirname(historyFileDest)
-    const backupDest = historyFileDest.replace('.json', `.backup.json`)
-
-    // Create destination directory if not exists
-    try {
-        fs.accessSync(dirname, fs.R_OK | fs.W_OK)
-    } catch (err) {
-        fs.ensureDir(dirname)
-    }
-
-    // backup existing file
-    if (fs.existsSync(historyFileDest)) {
-        fs.rename(historyFileDest, backupDest)
-    }
-
-    fs.writeFile(historyFileDest, JSON.stringify(itemStore.getters.history()), 'utf8', err => {
-        if (err) {
-            console.error(`${new Date().toLocaleString()} -> Can not create database file due to an error '${err}'`)
-        } else {
-            // remove backup file
-            if (fs.existsSync(backupDest)) {
-                fs.unlink(backupDest)
-            }
-
-            console.log(`${new Date().toLocaleString()} -> Store ${itemStore.getters.history().length} items in database file  '${historyFileDest}'`)
-        }
-    })
-})
 
 module.exports = {
     importDatabaseFile

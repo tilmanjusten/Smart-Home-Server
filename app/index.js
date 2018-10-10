@@ -9,12 +9,17 @@ const path = require('path')
 const weatherData = require('./lib/weather-data')
 const statusStore = require('./store/statusstore')
 const itemStore = require('./store/itemstore')
+const database = require('./lib/database')
 
 statusStore.events.subscribe('stateChange', status => {
     io.emit('status', status)
 })
 
 weatherData.importDatabaseFile(path.resolve(process.cwd(), 'data/', 'weatherdata.json'))
+database.setup({
+    dest: path.resolve(process.cwd(), 'data/', 'weatherdata.json'),
+    cronInterval: '*/10 * * * *'
+})
 
 // subscribe to itemstore after importing the database
 itemStore.events.subscribe('stateChange', state => {

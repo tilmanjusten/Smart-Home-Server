@@ -16,6 +16,7 @@ const DHT22 = (match = []) => {
     const item = {
         date: date.toUTCString(),
         deviceId,
+        type: 'DHT22',
         hu: humidity,
         te: temperature
     }
@@ -28,7 +29,20 @@ const YL69 = (match = []) => {
         return null
     }
 
-    return {}
+    const date = new Date()
+    const deviceId = match[1]
+    const moisture = match[2].replace('0', '')
+    const moistureVal = match[3].replace('0', '')
+
+    const item = {
+        date: date.toUTCString(),
+        deviceId,
+        type: 'YL69',
+        mo: moisture,
+        mv: moistureVal
+    }
+
+    return item
 }
 
 const importers = {

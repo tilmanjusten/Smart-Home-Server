@@ -14,7 +14,11 @@ const actions = {
 }
 const mutations = {
     setStatus(state, status) {
-        return Object.assign({}, state, status)
+        let newState = { ...state, ...status }
+
+        this.events.publish('addDevice', newState)
+
+        return newState
     }
 }
 

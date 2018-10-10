@@ -29,7 +29,7 @@ function importDatabaseFile(filepath) {
         }
 
         try {
-            jsonContent.map(item => itemStore.dispatch('addItem', item))
+            jsonContent.map(item => itemStore.dispatch('addDatabaseItem', item))
 
             console.log(`${new Date().toLocaleString()} -> Got history from database: ${itemStore.getters.history().length} items found`)
         } catch (err) {

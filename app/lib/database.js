@@ -1,11 +1,13 @@
 const fs = require('fs-extra')
 const path = require('path')
-const cron = require('node-cron')
 const itemStore = require('../store/itemstore')
+let options = {
+    dest: './data/weatherdata.json'
+}
 
-const persist = (dest) => {
-    const dirname = path.dirname(dest)
-    const backupDest = dest.replace('.json', `.backup.json`)
+const persist = () => {
+    const dirname = path.dirname(options.dest)
+    const backupDest = options.dest.replace('.json', `.backup.json`)
 
     // Create destination directory if not exists
     try {
@@ -15,11 +17,11 @@ const persist = (dest) => {
     }
 
     // backup existing file
-    if (fs.existsSync(dest)) {
-        fs.rename(dest, backupDest)
+    if (fs.existsSync(options.dest)) {
+        fs.rename(options.dest, backupDest)
     }
 
-    fs.writeFile(dest, JSON.stringify(itemStore.getters.history()), 'utf8', err => {
+    fs.writeFile(options.dest, JSON.stringify(itemStore.getters.history()), 'utf8', err => {
         if (err) {
             console.error(`${new Date().toLocaleString()} -> Can not create database file due to an error '${err}'`)
         } else {
@@ -28,18 +30,18 @@ const persist = (dest) => {
                 fs.unlink(backupDest)
             }
 
-            console.log(`${new Date().toLocaleString()} -> Store ${itemStore.getters.history().length} items in database file  '${dest}'`)
+            console.log(`${new Date().toLocaleString()} -> Store ${itemStore.getters.history().length} items in database file '${options.dest}'`)
         }
     })
 }
-const setup = (options = {
-    dest: path.resolve(process.cwd(), 'data/weatherdata.json'),
-    cronInterval: '*/10 * * * *'
+
+const setup = (opts = {
+    dest: path.resolve(process.cwd(), 'data/weatherdata.json')
 }) => {
-    cron.schedule(options.cronInterval, () => {
-        persist(options.dest)
-    })
+    options = {...options, ...opts}
 }
+
+itemStore.events.subscribe('addItem', persist)
 
 module.exports = {
     setup

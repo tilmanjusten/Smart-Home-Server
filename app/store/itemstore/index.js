@@ -54,14 +54,23 @@ const actions = {
     },
     addItem: (context, payload) => {
         if (typeof payload === 'string') {
-            payload = actions.importItem(context, payload)
+            actions.importItem(context, payload)
+
+            return
         }
 
         if (!payload.hasOwnProperty('data')) {
-            payload = processDatabaseItem(context.getters.devices(), payload)
+            actions.addDatabaseItem(context, payload)
+
+            return
         }
 
         context.commit('addItem', payload)
+    },
+    addDatabaseItem: (context, payload) => {
+        payload = processDatabaseItem(context.getters.devices(), payload)
+
+        context.commit('addDatabaseItem', payload)
     },
     addDevice: (context, payload) => {
         if (state.devices.includes(payload)) {
@@ -75,10 +84,21 @@ const mutations = {
     addItem(state, item) {
         state.items.push(item)
 
+        this.events.publish('addItem', item)
+
         return state
+    },
+    addDatabaseItem(state, item) {
+        let newState = this.mutations.addItem(state, item)
+
+        this.events.publish('addDatabaseItem', item)
+
+        return newState
     },
     addDevice(state, deviceName) {
         state.devices.push(deviceName)
+
+        this.events.publish('addDevice', deviceName)
 
         return state
     }

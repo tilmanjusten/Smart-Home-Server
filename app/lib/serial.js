@@ -10,10 +10,10 @@ module.exports = function (serialPortId, io) {
     const parser = port.pipe(new Readline({ delimiter: '\r\n' }))
 
     parser.on('data', data => {
-        itemStore.importItem(data)
+        itemStore.dispatch('importItem', data)
 
         if (data !== null) {
-            console.log(`${item.date.toLocaleString()} -> New data: ${data}`)
+            console.log(`${new Date().toLocaleString()} -> New data: ${data}`)
         }
     })
 

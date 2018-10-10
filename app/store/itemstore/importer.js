@@ -53,6 +53,10 @@ module.exports = (payload) => {
             }
         }
     }
-
-    return importAction(match)
+    
+    if (typeof importAction === 'function') {
+        return importAction(match)
+    } else {
+        return null
+    }
 }

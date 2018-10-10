@@ -31,9 +31,9 @@ function importDatabaseFile(filepath) {
         try {
             jsonContent.map(item => itemStore.dispatch('addDatabaseItem', item))
 
-            console.log(`${new Date().toLocaleString()} -> Got history from database: ${itemStore.getters.history().length} items found`)
+            console.log(`${new Date().toLocaleString()} -> Got ${itemStore.getters.history().length} items from database.`)
         } catch (err) {
-            console.error(`${new Date().toLocaleDateString()} -> Database is empty: ${err}`)
+            console.error(`${new Date().toLocaleString()} -> Database is empty: ${err}`)
 
             return false
         }

@@ -23,7 +23,7 @@ database.setup({
 
 // subscribe to itemstore after importing the database
 itemStore.events.subscribe('stateChange', state => {
-    io.emit('update', state.items.slice(-1))
+    io.emit('update', ...state.items.slice(-1))
 })
 
 serial(serialPortId, io)
@@ -69,18 +69,14 @@ io.on('connection', function (socket) {
     });
 
     socket.on('get status', () => {
-        console.log(`${new Date().toLocaleString()} -> Status ok: ${state.status.ok}`)
-        
         const status = statusStore.getters.status()
+        
+        console.log(`${new Date().toLocaleString()} -> Status ok: ${status.ok ? 'yes' : 'no'}`)
 
         socket.emit('status', status)
-
-        if (!status.ok) {
-            socket.emit('status error', status.data)
-        }
     })
 
     socket.on('get history', () => {
-        socket.emit('history', weatherData.getItems())
+        socket.emit('history', itemStore.getters.items())
     })
 });

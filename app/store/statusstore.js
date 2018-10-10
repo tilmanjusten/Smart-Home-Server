@@ -4,7 +4,7 @@ const state = {
 }
 const getters = {
     status() {
-        return state.status
+        return state
     }
 }
 const actions = {

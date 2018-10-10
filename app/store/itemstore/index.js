@@ -89,11 +89,11 @@ const mutations = {
         return state
     },
     addDatabaseItem(state, item) {
-        let newState = this.mutations.addItem(state, item)
+        state.items.push(item)
 
         this.events.publish('addDatabaseItem', item)
 
-        return newState
+        return state
     },
     addDevice(state, deviceName) {
         state.devices.push(deviceName)

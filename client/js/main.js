@@ -1,3 +1,4 @@
+/* global io, google, location */
 const socket = io(location.origin)
 let chart
 let items = []
@@ -42,9 +43,7 @@ const chartOptions = {
     format: '#',
     title: '°C / %'
   },
-  trendlines: {
-
-  },
+  trendlines: {},
   explorer: {
     axis: 'horizontal',
     actions: ['dragToPan', 'dragToZoom', 'rightClickToReset'],
@@ -54,7 +53,7 @@ const chartOptions = {
   }
 }
 
-google.charts.load('current', { 'packages': ['corechart'] })
+google.charts.load('current', { packages: ['corechart'] })
 // Set a callback to run when the Google Visualization API is loaded.
 google.charts.setOnLoadCallback(initChart)
 
@@ -118,7 +117,8 @@ function showError (item) {
   const error = document.querySelector('.error')
 
   if (item.id === 'no sensordata') {
-    error.innerHTML = 'Die Sensoren können nicht ausgelesen werden. Möglicherweise ist der Arduino nicht angeschlossen.'
+    error.innerHTML =
+      'Die Sensoren können nicht ausgelesen werden. Möglicherweise ist der Arduino nicht angeschlossen.'
   }
 
   error.classList.add('error--is-visible')
@@ -141,6 +141,7 @@ socket.on('history', data => {
   }
 })
 
+/* eslint-disable no-unused-vars */
 function toggleFullScreen () {
   if (!document.fullscreenElement) {
     document.documentElement.requestFullscreen()
@@ -150,6 +151,7 @@ function toggleFullScreen () {
     }
   }
 }
+/* eslint-disable no-unused-vars */
 
 function processItemForChart (item) {
   const res = [item.date]
@@ -195,10 +197,12 @@ function drawChart () {
     data.push([0, 0, 0, 0, 0, 0, 0])
   }
 
-  chartData = new google.visualization.arrayToDataTable(data)
+  chartData = new google.visualization.arrayToDataTable(data) // eslint-disable-line new-cap
 
   // Instantiate and draw our chart, passing in some options.
-  chart = new google.visualization.LineChart(document.getElementById('full-chart'))
+  chart = new google.visualization.LineChart(
+    document.getElementById('full-chart')
+  )
 
   chart.draw(chartData, chartOptions)
 }

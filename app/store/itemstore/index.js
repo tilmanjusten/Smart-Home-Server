@@ -6,7 +6,7 @@ const state = {
 }
 const historyMap = []
 
-function processDatabaseItem(devices, payload) {
+function processDatabaseItem (devices, payload) {
     const result = {
         date: payload.date,
         data: [],
@@ -29,14 +29,37 @@ function processDatabaseItem(devices, payload) {
 }
 
 const getters = {
-    items() {
+    items () {
         return state.items
     },
-    devices() {
+    devices () {
         return state.devices
     },
-    history() {
+    history () {
         return state.items.map(item => item.origin)
+    },
+    itemsByDeviceId (deviceId) {
+        return state.items.filter(item => item.origin.deviceId === deviceId)
+    },
+    latestItem () {
+        let items = state.items
+        let n = items.length
+
+        if (n < 1) {
+            return []
+        }
+
+        return items[n - 1]
+    },
+    latestItemByDeviceId (deviceId) {
+        let items = getters.itemsByDeviceId(deviceId)
+        let n = items.length
+
+        if (n < 1) {
+            return {}
+        }
+
+        return items[n - 1]
     }
 }
 
@@ -81,21 +104,21 @@ const actions = {
     }
 }
 const mutations = {
-    addItem(state, item) {
+    addItem (state, item) {
         state.items.push(item)
 
         this.events.publish('addItem', item)
 
         return state
     },
-    addDatabaseItem(state, item) {
+    addDatabaseItem (state, item) {
         state.items.push(item)
 
         this.events.publish('addDatabaseItem', item)
 
         return state
     },
-    addDevice(state, deviceName) {
+    addDevice (state, deviceName) {
         state.devices.push(deviceName)
 
         this.events.publish('addDevice', deviceName)

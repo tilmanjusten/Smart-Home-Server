@@ -28,13 +28,13 @@ itemStore.events.subscribe('stateChange', state => {
 
 serial(serialPortId, io)
 
-app.use(express.static('client', {icons: true}))
+app.use(express.static('client', { icons: true }))
 
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    
+
     next();
 });
 
@@ -59,6 +59,26 @@ app.get('/', (req, res) => {
     })
 })
 
+app.get('/api/v1/items', (req, res) => {
+    res.send(itemStore.getters.items())
+})
+
+app.get('/api/v1/items/latest', (req, res) => {
+    res.send(itemStore.getters.latestItem())
+})
+
+app.get('/api/v1/items/:deviceId', (req, res) => {
+    res.send(itemStore.getters.itemsByDeviceId(req.params.deviceId))
+})
+
+app.get('/api/v1/items/:deviceId/latest', (req, res) => {
+    res.send(itemStore.getters.latestItemByDeviceId(req.params.deviceId))
+})
+
+app.get('/api/v1/devices', (req, res) => {
+    res.send(itemStore.getters.devices())
+})
+
 server.listen(expressPort, console.log(`${new Date().toLocaleString()} -> HTTP server is listening on *:${expressPort}`));
 
 io.on('connection', function (socket) {
@@ -70,7 +90,7 @@ io.on('connection', function (socket) {
 
     socket.on('get status', () => {
         const status = statusStore.getters.status()
-        
+
         console.log(`${new Date().toLocaleString()} -> Status ok: ${status.ok ? 'yes' : 'no'}`)
 
         socket.emit('status', status)

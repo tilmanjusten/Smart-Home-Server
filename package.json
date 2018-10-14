@@ -4,7 +4,7 @@
   "description": "Show weather data.",
   "main": "app/index.js",
   "scripts": {
-    "develop-app": "NODE_ENV=develop nodemon app/index.js",
+    "dev": "NODE_ENV=develop nodemon app/index.js",
     "develop-client": "NODE_ENV=develop nodemon client-server.js --ignore app/",
     "start-app": "node app/index.js",
     "start-client": "node client-server.js",
@@ -17,8 +17,8 @@
   "author": "Tilman Justen",
   "license": "ISC",
   "dependencies": {
-    "browser-sync": "^2.1.6",
-    "express": "^4.16.3",
+    "browser-sync": "^2.26.0",
+    "express": "^4.16.4",
     "fs-extra": "^7.0.0",
     "serialport": "^7.0.2",
     "socket.io": "^2.1.1"

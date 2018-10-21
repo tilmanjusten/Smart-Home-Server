@@ -96,7 +96,7 @@ io.on('connection', function (socket) {
         socket.emit('status', status)
     })
 
-    socket.on('get history', () => {
-        socket.emit('history', itemStore.getters.items())
+    socket.on('get items', () => {
+        socket.emit('items', itemStore.getters.items())
     })
 });

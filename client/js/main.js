@@ -170,7 +170,7 @@ function processItemForChart (item) {
 }
 
 function initChart () {
-  socket.emit('get history')
+  socket.emit('get items')
 }
 // Callback that creates and populates a data table,
 // instantiates the pie chart, passes in the data and

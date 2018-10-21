@@ -4,29 +4,6 @@ const state = {
     items: [],
     devices: []
 }
-const historyMap = []
-
-function processDatabaseItem (devices, payload) {
-    const result = {
-        date: payload.date,
-        data: [],
-        origin: payload
-    }
-
-    historyMap[payload.deviceId] = payload
-
-    devices.forEach(deviceId => {
-        if (payload.deviceId === deviceId) {
-            result.data.push(payload)
-        } else if (historyMap[deviceId]) {
-            result.data.push(historyMap[deviceId])
-        } else {
-            result.data.push(null)
-        }
-    })
-
-    return result
-}
 
 const getters = {
     items () {
@@ -35,11 +12,8 @@ const getters = {
     devices () {
         return state.devices
     },
-    history () {
-        return state.items.map(item => item.origin)
-    },
     itemsByDeviceId (deviceId) {
-        return state.items.filter(item => item.origin.deviceId === deviceId)
+        return state.items.filter(item => item.deviceId === deviceId)
     },
     latestItem () {
         let items = state.items
@@ -68,12 +42,10 @@ const actions = {
         const item = importer(payload)
 
         if (!item) {
-            return null
+            return
         }
 
-        const processed = processDatabaseItem(context.getters.devices(), item)
-
-        actions.addItem(context, processed)
+        actions.addItem(context, item)
     },
     addItem: (context, payload) => {
         if (typeof payload === 'string') {
@@ -91,8 +63,6 @@ const actions = {
         context.commit('addItem', payload)
     },
     addDatabaseItem: (context, payload) => {
-        payload = processDatabaseItem(context.getters.devices(), payload)
-
         context.commit('addDatabaseItem', payload)
     },
     addDevice: (context, payload) => {

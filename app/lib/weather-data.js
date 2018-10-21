@@ -1,5 +1,5 @@
 const fs = require('fs-extra')
-let devices = ['INKE', 'ODIN', 'PURL']
+let devices = ['AMUN', 'THOR', 'ZEUS']
 const itemStore = require('../store/itemstore')
 
 devices.forEach(deviceName => itemStore.dispatch('addDevice', deviceName))

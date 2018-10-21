@@ -32,14 +32,14 @@ const YL69 = (match = []) => {
   const date = new Date()
   const deviceId = match[1]
   const moisture = match[2].replace('0', '')
-  const moistureVal = match[3].replace('0', '')
+  const moisturePercentage = match[3].replace('0', '')
 
   const item = {
     date: date.toUTCString(),
     deviceId,
     type: 'YL69',
     mo: moisture,
-    mv: moistureVal
+    mv: moisturePercentage
   }
 
   return item

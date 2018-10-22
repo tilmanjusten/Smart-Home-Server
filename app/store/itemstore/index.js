@@ -54,12 +54,6 @@ const actions = {
             return
         }
 
-        if (!payload.hasOwnProperty('data')) {
-            actions.addDatabaseItem(context, payload)
-
-            return
-        }
-
         context.commit('addItem', payload)
     },
     addDatabaseItem: (context, payload) => {

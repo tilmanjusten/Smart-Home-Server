@@ -2,6 +2,7 @@ const serialPortId = process.env.NODE_ENV === 'develop' ? '/dev/tty.usbmodem1420
 const express = require('express')
 const app = express()
 const server = require('http').Server(app);
+const history = require('connect-history-api-fallback')
 const io = require('socket.io')(server);
 const serial = require('./lib/serial')
 const path = require('path')
@@ -27,6 +28,7 @@ itemStore.events.subscribe('stateChange', state => {
 
 serial(serialPortId, io)
 
+app.use(history())
 app.use(express.static('client', { icons: true }))
 app.set('port', process.env.PORT || 3000)
 

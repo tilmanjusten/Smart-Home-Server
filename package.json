@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "NODE_ENV=develop nodemon app/index.js",
     "develop-client": "NODE_ENV=develop nodemon client-server.js --ignore app/",
-    "start-app": "node app/index.js",
-    "start-client": "node client-server.js",
+    "start": "node app/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "deploy": "rsync -av -e ssh . raspi:/home/pi/weather-at-home --exclude=node_modules/ --exclude=.idea/ --exclude=.vscode/ --exclude=.git/ --exclude=data/ --delete-after",
     "deploy:data": "rsync -av -e ssh ./data/weatherdata.json raspi:/home/pi/weather-at-home/data/",

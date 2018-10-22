@@ -21,7 +21,7 @@ const persistDatabase = () => {
     fs.copyFileSync(options.dest, backupDest)
   }
 
-  fs.writeFile(options.dest, JSON.stringify(itemStore.getters.history()), 'utf8', err => {
+  fs.writeFile(options.dest, JSON.stringify(itemStore.getters.items()), 'utf8', err => {
     if (err) {
       console.error(
         `%s -> Can not create database file due to an error '%s'`,
@@ -32,7 +32,7 @@ const persistDatabase = () => {
       console.log(
         `%s -> Store %d items in database file '%s'`,
         new Date().toLocaleString(),
-        itemStore.getters.history().length,
+        itemStore.getters.items().length,
         path.relative(process.cwd(), options.dest)
       )
     }

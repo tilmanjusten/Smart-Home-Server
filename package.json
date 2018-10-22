@@ -9,7 +9,8 @@
     "start-app": "node app/index.js",
     "start-client": "node client-server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy": "rsync -av -e ssh . raspi:/home/pi/weather-at-home --exclude=node_modules/ --exclude=.idea/ --exclude=.git/ --exclude=data/ --delete-after",
+    "deploy": "rsync -av -e ssh . raspi:/home/pi/weather-at-home --exclude=node_modules/ --exclude=.idea/ --exclude=.vscode/ --exclude=.git/ --exclude=data/ --delete-after",
+    "deploy:data": "rsync -av -e ssh ./data/weatherdata.json raspi:/home/pi/weather-at-home/data/",
     "fetch-live-data": "rsync -av -e ssh raspi:/home/pi/weather-at-home/data .",
     "serialport-list": "serialport-list"
   },

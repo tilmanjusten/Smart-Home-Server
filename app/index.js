@@ -1,7 +1,6 @@
 const serialPortId = process.env.NODE_ENV === 'develop' ? '/dev/tty.usbmodem14201' : '/dev/ttyUSB0' // '/dev/ttyACM0'
 const express = require('express')
 const app = express()
-const expressPort = 3000
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const serial = require('./lib/serial')
@@ -29,6 +28,7 @@ itemStore.events.subscribe('stateChange', state => {
 serial(serialPortId, io)
 
 app.use(express.static('client', { icons: true }))
+app.set('port', process.env.PORT || 3000)
 
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
@@ -79,7 +79,7 @@ app.get('/api/v1/devices', (req, res) => {
     res.send(itemStore.getters.devices())
 })
 
-server.listen(expressPort, console.log(`${new Date().toLocaleString()} -> HTTP server is listening on *:${expressPort}`));
+server.listen(app.get('port'), console.log(`${new Date().toLocaleString()} -> HTTP server is listening on *:${app.get('port')}`));
 
 io.on('connection', function (socket) {
     console.log(`${new Date().toLocaleString()} -> A user connected`);

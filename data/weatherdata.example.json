@@ -1,0 +1,408 @@
+[
+    {
+        "date": "Sun, 21 Oct 2018 10:41:24 GMT",
+        "deviceId": "ZEUS",
+        "type": "DHT22",
+        "hu": "56",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 10:42:42 GMT",
+        "deviceId": "THOR",
+        "type": "DHT22",
+        "hu": "52",
+        "te": "+21"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 10:44:26 GMT",
+        "deviceId": "ZEUS",
+        "type": "DHT22",
+        "hu": "56",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 10:47:27 GMT",
+        "deviceId": "ZEUS",
+        "type": "DHT22",
+        "hu": "56",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 10:50:29 GMT",
+        "deviceId": "ZEUS",
+        "type": "DHT22",
+        "hu": "56",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 10:51:46 GMT",
+        "deviceId": "THOR",
+        "type": "DHT22",
+        "hu": "52",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 10:53:30 GMT",
+        "deviceId": "ZEUS",
+        "type": "DHT22",
+        "hu": "56",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 10:54:48 GMT",
+        "deviceId": "THOR",
+        "type": "DHT22",
+        "hu": "52",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 10:56:32 GMT",
+        "deviceId": "ZEUS",
+        "type": "DHT22",
+        "hu": "56",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 10:57:50 GMT",
+        "deviceId": "THOR",
+        "type": "DHT22",
+        "hu": "53",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 10:59:33 GMT",
+        "deviceId": "ZEUS",
+        "type": "DHT22",
+        "hu": "56",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 11:00:51 GMT",
+        "deviceId": "THOR",
+        "type": "DHT22",
+        "hu": "53",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 11:02:35 GMT",
+        "deviceId": "ZEUS",
+        "type": "DHT22",
+        "hu": "55",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 11:03:53 GMT",
+        "deviceId": "THOR",
+        "type": "DHT22",
+        "hu": "53",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 11:05:37 GMT",
+        "deviceId": "ZEUS",
+        "type": "DHT22",
+        "hu": "56",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 11:06:54 GMT",
+        "deviceId": "THOR",
+        "type": "DHT22",
+        "hu": "53",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 12:10:26 GMT",
+        "deviceId": "THOR",
+        "type": "DHT22",
+        "hu": "49",
+        "te": "+18"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 12:12:11 GMT",
+        "deviceId": "ZEUS",
+        "type": "DHT22",
+        "hu": "50",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 12:13:28 GMT",
+        "deviceId": "THOR",
+        "type": "DHT22",
+        "hu": "49",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 12:15:13 GMT",
+        "deviceId": "ZEUS",
+        "type": "DHT22",
+        "hu": "50",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 12:16:29 GMT",
+        "deviceId": "THOR",
+        "type": "DHT22",
+        "hu": "49",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 12:18:14 GMT",
+        "deviceId": "ZEUS",
+        "type": "DHT22",
+        "hu": "50",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 12:19:31 GMT",
+        "deviceId": "THOR",
+        "type": "DHT22",
+        "hu": "49",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 12:21:16 GMT",
+        "deviceId": "ZEUS",
+        "type": "DHT22",
+        "hu": "50",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 12:22:33 GMT",
+        "deviceId": "THOR",
+        "type": "DHT22",
+        "hu": "50",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 12:24:18 GMT",
+        "deviceId": "ZEUS",
+        "type": "DHT22",
+        "hu": "50",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 12:25:34 GMT",
+        "deviceId": "THOR",
+        "type": "DHT22",
+        "hu": "50",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 12:27:19 GMT",
+        "deviceId": "ZEUS",
+        "type": "DHT22",
+        "hu": "50",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 12:28:36 GMT",
+        "deviceId": "THOR",
+        "type": "DHT22",
+        "hu": "49",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 12:30:21 GMT",
+        "deviceId": "ZEUS",
+        "type": "DHT22",
+        "hu": "49",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 12:31:37 GMT",
+        "deviceId": "THOR",
+        "type": "DHT22",
+        "hu": "49",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 12:33:22 GMT",
+        "deviceId": "ZEUS",
+        "type": "DHT22",
+        "hu": "49",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 12:34:39 GMT",
+        "deviceId": "THOR",
+        "type": "DHT22",
+        "hu": "48",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 12:34:58 GMT",
+        "deviceId": "ZEUS",
+        "type": "YL69",
+        "mo": "817",
+        "mv": "+21"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 12:36:24 GMT",
+        "deviceId": "ZEUS",
+        "type": "DHT22",
+        "hu": "49",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 12:37:40 GMT",
+        "deviceId": "THOR",
+        "type": "DHT22",
+        "hu": "49",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 12:39:26 GMT",
+        "deviceId": "ZEUS",
+        "type": "DHT22",
+        "hu": "49",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 12:39:44 GMT",
+        "deviceId": "THOR",
+        "type": "YL69",
+        "mo": "639",
+        "mv": "+38"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 12:40:42 GMT",
+        "deviceId": "THOR",
+        "type": "DHT22",
+        "hu": "49",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 12:42:27 GMT",
+        "deviceId": "ZEUS",
+        "type": "DHT22",
+        "hu": "49",
+        "te": "+20"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 12:43:43 GMT",
+        "deviceId": "THOR",
+        "type": "DHT22",
+        "hu": "49",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 12:45:29 GMT",
+        "deviceId": "ZEUS",
+        "type": "DHT22",
+        "hu": "49",
+        "te": "+20"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 12:46:45 GMT",
+        "deviceId": "THOR",
+        "type": "DHT22",
+        "hu": "49",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 12:48:30 GMT",
+        "deviceId": "ZEUS",
+        "type": "DHT22",
+        "hu": "50",
+        "te": "+20"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 12:49:46 GMT",
+        "deviceId": "THOR",
+        "type": "DHT22",
+        "hu": "49",
+        "te": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 12:49:58 GMT",
+        "deviceId": "ZEUS",
+        "type": "YL69",
+        "mo": "830",
+        "mv": "+19"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 13:09:41 GMT",
+        "deviceId": "ZEUS",
+        "type": "DHT22",
+        "hu": "52",
+        "te": "+21"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 13:09:45 GMT",
+        "deviceId": "THOR",
+        "type": "YL69",
+        "mo": "638",
+        "mv": "+38"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 13:10:57 GMT",
+        "deviceId": "THOR",
+        "type": "DHT22",
+        "hu": "41",
+        "te": "+27"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 13:11:35 GMT",
+        "deviceId": "AMUN",
+        "type": "DHT22",
+        "hu": "49",
+        "te": "+20"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 13:12:43 GMT",
+        "deviceId": "ZEUS",
+        "type": "DHT22",
+        "hu": "52",
+        "te": "+21"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 13:13:59 GMT",
+        "deviceId": "THOR",
+        "type": "DHT22",
+        "hu": "42",
+        "te": "+26"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 13:14:37 GMT",
+        "deviceId": "AMUN",
+        "type": "DHT22",
+        "hu": "50",
+        "te": "+20"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 13:15:45 GMT",
+        "deviceId": "ZEUS",
+        "type": "DHT22",
+        "hu": "52",
+        "te": "+21"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 13:17:00 GMT",
+        "deviceId": "THOR",
+        "type": "DHT22",
+        "hu": "43",
+        "te": "+25"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 13:17:38 GMT",
+        "deviceId": "AMUN",
+        "type": "DHT22",
+        "hu": "50",
+        "te": "+20"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 13:18:46 GMT",
+        "deviceId": "ZEUS",
+        "type": "DHT22",
+        "hu": "53",
+        "te": "+21"
+    },
+    {
+        "date": "Sun, 21 Oct 2018 13:20:00 GMT",
+        "deviceId": "ZEUS",
+        "type": "YL69",
+        "mo": "812",
+        "mv": "+21"
+    }
+]

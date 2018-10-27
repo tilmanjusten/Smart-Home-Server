@@ -5,7 +5,6 @@
   "main": "app/index.js",
   "scripts": {
     "dev": "NODE_ENV=develop nodemon app/index.js",
-    "develop-client": "NODE_ENV=develop nodemon client-server.js --ignore app/",
     "start": "PORT=3000 node app/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "deploy": "rsync -av -e ssh . raspi:/home/pi/weather-at-home --exclude=node_modules/ --exclude=.idea/ --exclude=.vscode/ --exclude=.git/ --exclude=data/ --exclude=client/ --delete-after",
